@@ -1,37 +1,31 @@
-# -*- coding: utf-8 -*-
-import socket, sys
+import scapy.all as scapy
+import argparse
 
-HOST = '192.168.109.128'
-PORT = 50000
+def get_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t", "--target", dest="target",
+                        help="Target IP/IP Range")
+    options = parser.parse_args()
+    return options
 
-mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-try:
-    mySocket.bind((HOST, PORT))
-except socket.error:
-    print "La liaison du socket à l'adresse choisie a échoué."
-    sys.exit()
+def scan(ip):
+    arp_request = scapy.ARP(pdst=ip)
+    broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+    arp_request_broadcast = broadcast/arp_request
+    answered_list = scapy.srp(arp_request_broadcast, timeout=1,
+                              verbose=False)[0]
+    clients_list = []
+    for element in answered_list:
+        client_dict = {"ip": element[1].psrc, "mac": element[1].hwsrc}
+        clients_list.append(client_dict)
+    return clients_list
 
-while 1:
-    print "Serveur prêt, en attente de requêtes ..."
-    mySocket.listen(5)
-    
-    connexion, adresse = mySocket.accept()
-    print "Client connecté, adresse IP %s, port %s" % (adresse[0], adresse[1])
-    
-    connexion.send("Vous êtes connecté au serveur Marcel. Envoyez vos messages.")
-    msgClient = connexion.recv(1024)
-    while 1:
-        print "C>", msgClient
-        if msgClient.upper() == "FIN" or msgClient =="":
-            break
-        msgServeur = raw_input("S> ")
-        connexion.send(msgServeur)
-        msgClient = connexion.recv(1024)
+def print_result(results_list):
+    print("IP\t\t\tMAC Address")
+    print("----------------------------------------------------")
+    for client in results_list:
+        print(client["ip"] + "\t\t" + client["mac"])
 
-    connexion.send("Au revoir !")
-    print "Connexion interrompue."
-    connexion.close()
-
-    ch = raw_input("<R>ecommencer <T>erminer ? ")
-    if ch.upper() =='T':
-        break
+options = get_arguments()
+scan_result = scan(options.target)
+print_result(scan_result)
