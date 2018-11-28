@@ -79,7 +79,6 @@ def main():
         elif methode_hash == "help" or "HELP":
                 print("Méthodes de hash disponibles :\n{}\n" .format(
                     ", ".join(sorted(hashlib.algorithms_guaranteed))))
-				main()
 
         else:
                 print("La méthode de hashage n'est pas reconnue")
