@@ -1,9 +1,11 @@
 import uuid
 import hashlib
 
+
 ##FONCTION
 def main():
-        methode_hash = input("""Entrez la méthode de hashage : (ou "help" pour afficher toutes les méthodes possibles)\n""")
+        methode_hash = input("Entrez une méthode de hashage parmi les suivantes :\n{}\n" .format(
+            ", ".join(sorted(hashlib.algorithms_guaranteed))))
         salt = uuid.uuid4().hex
 
         if methode_hash == "md5" or methode_hash == "MD5":
@@ -78,10 +80,6 @@ def main():
                 print("Le mot hashé en sha3_512 est : ")
                 print(result.hexdigest() + ":" + salt)
 
-        elif methode_hash == "help" or methode_hash == "HELP":
-                print("Méthodes de hash disponibles :\n{}\n" .format(
-                    ", ".join(sorted(hashlib.algorithms_guaranteed))))
-                main()
 
         else:
                 print("La méthode de hashage n'est pas reconnue")
@@ -91,4 +89,3 @@ def main():
 word_hash = input("Entrez le mot à hasher :\n")
 
 main()
-
