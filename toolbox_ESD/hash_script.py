@@ -36,8 +36,7 @@ def main():
                 print("Le mot hashé en sha512 est : ")
                 print(result.hexdigest() + ":" + salt)
 
-        elif methode_hash == "shake_128" or methode_hash == "SHA512":
-                """longueur_hash = input("Entrez la longueur de hash voulue\n")"""
+        elif methode_hash == "shake_128" or methode_hash == "SHAKE_128":
                 result = hashlib.shake_128(salt.encode() + word_hash.encode())
                 print("Le mot hashé en shake_128 est : ")
                 print(result.hexdigest(15) + ":" + salt)
