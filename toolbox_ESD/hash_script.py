@@ -3,7 +3,7 @@ import hashlib
 
 ##FONCTION
 def main():
-        methode_hash = input("Entrez la méthode de hashage : (ou help pour afficher toutes les méthodes possibles)\n")
+        methode_hash = input("""Entrez la méthode de hashage : (ou "help" pour afficher toutes les méthodes possibles)\n""")
         salt = uuid.uuid4().hex
 
         if methode_hash == "md5" or methode_hash == "MD5":
@@ -37,14 +37,16 @@ def main():
                 print(result.hexdigest() + ":" + salt)
 
         elif methode_hash == "shake_128" or methode_hash == "SHAKE_128":
+                longueur_hash = input("Entrez la longueur de hash voulue\n")
                 result = hashlib.shake_128(salt.encode() + word_hash.encode())
                 print("Le mot hashé en shake_128 est : ")
-                print(result.hexdigest(15) + ":" + salt)
+                print(result.hexdigest(int(longueur_hash)) + ":" + salt)
 
         elif methode_hash == "shake_256" or methode_hash == "SHAKE_256":
+                longueur_hash = input("Entrez la longueur de hash voulue\n")
                 result = hashlib.shake_256(salt.encode() + word_hash.encode())
                 print("Le mot hashé en shake_256 est : ")
-                print(result.hexdigest(15) + ":" + salt)
+                print(result.hexdigest(int(longueur_hash)) + ":" + salt)
 
         elif methode_hash == "blake2b" or methode_hash == "BLAKE2B":
                 result = hashlib.blake2b(salt.encode() + word_hash.encode())
@@ -76,9 +78,10 @@ def main():
                 print("Le mot hashé en sha3_512 est : ")
                 print(result.hexdigest() + ":" + salt)
 
-        elif methode_hash == "help" or "HELP":
+        elif methode_hash == "help" or methode_hash == "HELP":
                 print("Méthodes de hash disponibles :\n{}\n" .format(
                     ", ".join(sorted(hashlib.algorithms_guaranteed))))
+                main()
 
         else:
                 print("La méthode de hashage n'est pas reconnue")
