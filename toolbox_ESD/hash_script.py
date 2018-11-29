@@ -2,7 +2,7 @@ import uuid
 import hashlib
 
 
-##FONCTION
+##FUNCTION WHICH HASH A WORD DEPENDING ON THE METHOD CHOSEN
 def main():
         methode_hash = input("Choose one of the following method :\n{}\n" .format(
             ", ".join(sorted(hashlib.algorithms_guaranteed))))
@@ -84,7 +84,7 @@ def main():
                 print("Unknown method, try another one")
                 main()
 
-##PROGRAMME
+##PROGRAM
 word_hash = input("Enter a word to hash :\n")
 
 main()
