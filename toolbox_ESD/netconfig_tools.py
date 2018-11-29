@@ -15,12 +15,12 @@ def up_down_card(net_list):
             try:    
                 os.system("ifup " + net_card)
             except ValueError:
-                print "Oops ! There is a problem, please check your network configuration"
+                print ("Oops ! There is a problem, please check your network configuration")
         elif value == 0:
             try:    
                 os.system("ifdown " + net_card)
             except ValueError:
-                print "Oops ! There is a problem, please check your network configuration"
+                print ("Oops ! There is a problem, please check your network configuration")
         else:
             print ("Not 0 or 1" + "\n") 
             up_down_card(net_list)
@@ -50,7 +50,7 @@ def set_ip(net_list):
                 net_card_static = ("auto "+ net_card + "\n" + "iface " + net_card + " inet static" + "\n" + "address " + ip_addr + "\n" + "netmask " + netmask + "\n" + "gateway " + gateway + "\n")
                 net_file.write(net_card_static + "\n" + "\n")
             else:
-                print "Not dhcp or static"
+                print ("Not dhcp or static")
                 set_ip(net_card) 
     net_file.close()       
     os.system("cat /etc/network/interfaces")
