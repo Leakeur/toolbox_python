@@ -1,10 +1,36 @@
 # /usr/bin/python 
 
 import os,random, time
+import sys
+import socket
 from urllib.request import urlopen
 
 
 global net_list
+
+
+def whois():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect(("whois.arin.net", 43))
+
+    #convert string to bytes, socket need bytes
+    read = input ("Give the ip address to WHO IS : "  )
+    s.send((read + "\r\n").encode())
+
+    #declares a bytes
+    response = b""
+    while True:
+        data = s.recv(4096)
+        response += data
+        if not data:
+            break
+    s.close()
+
+    #convert bytes to string
+    output = response.decode()
+    print(output)
+
+
 
 #Function to switch up / down for network cards 
 def up_down_card(net_list):
@@ -119,7 +145,11 @@ def disable_anon():
 
 #Function to reset anon surf (change public ip)
 def reset_anon():
-    os.system("anonsurf change")        
+    os.system("anonsurf change")
+
+
+def dns_tools():
+    os.system("apt-get install libavahi-compat-libdnssd1 git-core")         
 
 def launch_menu(): 
     net_list = list_net_card()       
@@ -138,9 +168,12 @@ def launch_menu():
         enable_anon()    
     elif read_cmd == 7:
         disable_anon()
-    elif read_cmd == 8l:
+    elif read_cmd == 8:
         reset_anon()            
     else:
         print("Bad number")
         launch_menu()    
+
+
+whois()
 
