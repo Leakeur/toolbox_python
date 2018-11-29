@@ -88,3 +88,5 @@ def main():
 word_hash = input("Enter a word to hash :\n")
 
 main()
+
+input("Appuyer sur entrée pour fermer")
